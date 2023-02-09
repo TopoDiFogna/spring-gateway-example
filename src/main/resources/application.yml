@@ -5,27 +5,23 @@ spring:
         - id: baeldung_route
           uri: http://baeldung.com
           predicates:
-            - Path=/baeldung/
+            - Path=/baeldung*
+          filters:
+            - RewritePath=/baeldung(?<segment>/?.*), $\{segment}
         - id: catch-all
           uri: http://localhost:8000
           predicates:
-            - Path=/*
+            - Path=/api/*
       default-filters:
         - TokenRelay=
+        - CustomFilter=
   security:
     oauth2:
       client:
-        provider:
-          battle-net:
-            issuer-uri: https://oauth.battle.net
         registration:
-          battle-net:
-            provider: battle-net
-            client-id: <redacted>
+          github:
+            client-id: f678afd5e716ecb79812
             client-secret: <redacted>
-            scope:
-              - openid
-              - wow.profile
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/postgres
     username: postgres
